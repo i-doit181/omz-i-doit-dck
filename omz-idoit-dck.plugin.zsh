@@ -33,3 +33,7 @@ alias openapi-generator-cli='docker run -it -v $(pwd)/:/project/ -w /project ope
 
 #devops
 alias devops='docker run -it -v $(pwd)/:/project/ salvax86/tools:2.0.0 /bin/bash'
+
+#container-structure-tests
+#example test --image salvax86/tools --config test/tests.yaml
+alias cst='docker run -it -v $(pwd):/project -w /project -v /var/run/docker.sock:/var/run/docker.sock gcr.io/gcp-runtimes/container-structure-test:latest $@'
