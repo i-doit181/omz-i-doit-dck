@@ -5,7 +5,42 @@ alias -s {yml,yaml,json,properties}=vim
 ##pipeline with grep
 alias -g G=' | grep -i'
 
+function start_lima() {
+  docker ps
+
+  check=$?
+
+  if [ "$check" -eq 1 ]; then
+    echo "start vm"
+    sleep 1
+    limactl start $HOME/lima_machines/docker.yaml --tty=false
+    echo "started vm"
+  else
+    echo "vm already started"
+  fi
+}
+
+function stop_lima() {
+  limactl stop docker && limactl delete docker
+}
+
 #docker
+function start_podman() {
+  local vmName=${1:-"workstation"}
+  echo 'init podman vm'
+  podman machine init --cpus=1 --disk-size=1024 --memory=1024 ${vmName}
+  echo 'start podman vm'
+  podman machine start ${vmName}
+}
+
+function destroy_podman() {
+  local vmName=${1:-"workstation"}
+  echo 'stop podman vm'
+  podman machine stop ${vmName}
+  echo 'destroy podman vm'
+  podman machine rm ${vmName}
+}
+
 function docker_login() {
   local proxy=${1:-"index.docker.io"}
   if [ -z ${2+x} ]
@@ -16,8 +51,13 @@ function docker_login() {
   fi
 }
 
-#todo: use docker credential storage instead of volatile credentials
+#alias docker='podman'
 alias dck_lgn='docker_login $1 $2'
+
+#alias dck_start='start_podman $1'
+#alias dck_destroy='destroy_podman $2'
+alias dck_start='start_lima'
+alias dck_destroy='stop_lima'
 
 #terraform
 alias trf='docker run -it -w="/.terraform" -v $(pwd)/:/.terraform/ hashicorp/terraform:1.0.7'
