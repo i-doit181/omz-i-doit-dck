@@ -3,7 +3,7 @@
 alias -s {yml,yaml,json,properties}=vim
 
 ##pipeline with grep
-alias -g G=' | grep -i'
+alias -g G='$1 | grep -i $2'
 
 ##get process
 alias psg='ps -ax | grep -v grep | grep'
