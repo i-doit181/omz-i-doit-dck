@@ -5,6 +5,9 @@ alias -s {yml,yaml,json,properties}=vim
 ##pipeline with grep
 alias -g G=' | grep -i'
 
+##get process
+alias psg='ps -ax | grep -v grep | grep'
+
 function start_lima() {
   docker ps
 
